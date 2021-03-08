@@ -1,20 +1,48 @@
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+require('dotenv').config();
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+const mongoose = require('mongoose');
+const createError = require('http-errors');
+const express = require('express');
+const logger = require('morgan');
 
-var app = express();
+require('./config/db.config');
 
+const app = express();
+
+/**
+ * Middlewares
+ */
+app.use(express.json())
 app.use(logger('dev'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
+/**
+ * Configure routes
+ */
+const router = require('./config/routes.config');
+app.use('/api', router);
 
-module.exports = app;
+app.use((req, res, next) => {
+  next(createError(404, 'Route not found'));
+});
+
+app.use((error, req, res, next) => {
+  if (error instanceof mongoose.Error.ValidationError) error = createError(400, error)
+  else if (error instanceof mongoose.Error.CastError) error = createError(404, 'Resource not found')
+
+  console.error(error);
+
+  res.status(error.status || 500);
+  const data = {}
+  data.message = error.message;
+  data.errors = error.errors ?
+    Object.keys(error.errors)
+      .reduce((errors, key) => ({ ...errors, [key]: error.errors[key].message }), {}) :
+    undefined;
+
+  res.json(data);
+});
+
+const port = Number(process.env.PORT || 3000);
+app.listen(port, () => {
+  console.log(`Ready! Listening on port ${port}`);
+});
