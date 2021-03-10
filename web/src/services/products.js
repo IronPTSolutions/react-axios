@@ -10,8 +10,14 @@ const remove = (id) => {
     .then(response => Promise.resolve())
 }
 
+const create = (product) => {
+  return http.post(`/products`, product)
+    .then(response => response.data);
+}
+
 const service = {
   list,
-  remove
+  remove,
+  create
 }
 export default service;

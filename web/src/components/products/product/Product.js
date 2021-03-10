@@ -6,7 +6,7 @@ function Product({ id, title, description, price, image, category, titleMaxWords
       <div className="card-body">
         <h5 className="card-title">{title.split(' ').slice(0, titleMaxWords).join(' ')}</h5>
         <p className="card-text">{description.slice(0, descriptionMaxChars)}...</p>
-        <div class="d-grid gap-2">
+        <div className="d-grid gap-2">
           <button className="btn btn-danger" onClick={() => onClickDelete(id)}><i className="fa fa-trash-o" /> Delete</button>
         </div>
       </div>
