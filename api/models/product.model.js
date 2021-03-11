@@ -24,7 +24,7 @@ const productSchema = new Schema({
   price: {
     type: Number,
     required: 'Price is required',
-    min: [0, 'price must be grater than 0']
+    min: [0, 'Price must be grater than 0']
   },
   category: {
     type: String,

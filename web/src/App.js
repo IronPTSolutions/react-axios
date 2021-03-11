@@ -1,19 +1,21 @@
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Navbar from './components/nav/Navbar';
 import Footer from './components/footer/Footer';
-import Section from './components/section/Section';
-import ProductList from './components/products/product-list/ProductList';
+import Products from './screens/Products';
+import CreateProduct from './screens/CreateProduct';
 
 function App() {
   return (
-    <div className="App">
+    <Router>
       <Navbar />
       <div className="container py-5">
-        <Section title="Products">
-          <ProductList />
-        </Section>
+        <Switch>
+          <Route exact path="/" component={Products}/>
+          <Route exact path="/create-product" component={CreateProduct}/>
+        </Switch>
       </div>
       <Footer />
-    </div>
+    </Router>
   );
 }
 

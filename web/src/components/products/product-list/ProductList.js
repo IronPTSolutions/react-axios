@@ -32,7 +32,7 @@ class ProductList extends Component {
     return (
       <div className="row row-cols-12 row-cols-sm-2 row-cols-md-4">
         {products.map(product => (
-          <div className="col mb-3"><Product key={product.id} {...product} onClickDelete={this.handleDeleteProduct}/></div>
+          <div key={product.id} className="col mb-3"><Product {...product} onClickDelete={this.handleDeleteProduct}/></div>
         ))}
       </div>
     )
